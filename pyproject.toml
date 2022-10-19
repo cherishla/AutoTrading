@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "AutoTrading"
+version = "0.1.0"
+description = ""
+authors = ["偉荏","Lala"]
+readme = "README.md"
+packages = [{include = "auto_trading"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
