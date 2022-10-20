@@ -11,7 +11,7 @@
 ## 3日線
 > python trader2.py --training training_data.csv --testing testing_data.csv  --output output.csv
 
-* 沒有利用ML直接坐回測
+* 沒有利用ML直接做回測
 * 因為資料量過少，嘗試1~5日線中，只有3日線損益比較好
 
 ## xGBoost  (不含三日線)
