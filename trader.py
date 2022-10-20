@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     testing_data = pd.read_csv(args.testing, names=FEATURE_NAMES)
     testing_data.drop(testing_data.tail(1).index, inplace=True)
-    with open('D:\\code\\2022\\StockProfitCalculator\\output.csv', 'w') as output_file:
+    with open(args.output, 'w') as output_file:
         for (_, row) in testing_data.iterrows():
             # We will perform your action as the open price in the next day.
             output_file.writelines(f'{trader.predict_action(row)}\n')
