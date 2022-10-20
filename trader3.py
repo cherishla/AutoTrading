@@ -1,5 +1,5 @@
 import pandas as pd
-import statistics
+import numpy as np
 import pandas.core.frame
 from xgboost import XGBClassifier
 
@@ -11,7 +11,6 @@ class Trader:
     xgb = XGBClassifier()
     stock_info = pd.DataFrame(columns=FEATURE_NAMES)
     stock = 0
-    MA3=[]
 
     def get_class(self, row: pd.core.series.Series):
         bound = 4
@@ -55,20 +54,13 @@ class Trader:
 
     def predict_action(self, data: pd.core.series.Series):
         self.stock_info.loc[len(self.stock_info) + 1] = data
-        self.MA3.append(data['close'])
         df = pd.DataFrame(self.stock_info)
         predict = self.xgb.predict(df)
         action = 0
-
         if predict[-1] > 2 and self.stock != -1:
             action = -1
         elif predict[-1] < 3 and self.stock != 1:
             action = 1
-        elif len(self.MA3) > 3:
-            if data['close'] > statistics.mean(self.MA3[-3:]) and predict[-1] <= 2 and self.stock != 1: #昨日收盤價突破MA3，買進
-                action = 1
-            elif data['close'] < statistics.mean(self.MA3[-3:]) and predict[-1] <= 1 and self.stock != -1:#昨日收盤價跌破MA3，賣出
-                action = -1
 
         self.stock += action
         return action
@@ -92,7 +84,7 @@ if __name__ == "__main__":
 
     testing_data = pd.read_csv(args.testing, names=FEATURE_NAMES)
     testing_data.drop(testing_data.tail(1).index, inplace=True)
-    with open('D:\\code\\2022\\StockProfitCalculator\\output.csv', 'w') as output_file:
+    with open(args.output, 'w') as output_file:
         for (_, row) in testing_data.iterrows():
             # We will perform your action as the open price in the next day.
             output_file.writelines(f'{trader.predict_action(row)}\n')
